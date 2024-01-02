@@ -28,8 +28,4 @@ object DateConverter {
         val zone = ZonedDateTime.of(localDateTime, ZoneId.systemDefault())
         return zone.toInstant().toEpochMilli()
     }
-
-
-
-
 }

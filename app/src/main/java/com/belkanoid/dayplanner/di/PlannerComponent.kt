@@ -1,6 +1,7 @@
 package com.belkanoid.dayplanner.di
 
 import android.app.Application
+import com.belkanoid.dayplanner.presentation.screens.createEvent.CreateEventFragment
 import com.belkanoid.dayplanner.presentation.screens.eventPlanner.EventPlannerFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -12,6 +13,7 @@ interface PlannerComponent {
 
     fun detailedFragmentComponentFactory(): DetailedFragmentSubcomponent.Factory
     fun inject(eventPlannerFragment: EventPlannerFragment)
+    fun inject(createEventFragment: CreateEventFragment)
 
 
     @Component.Factory

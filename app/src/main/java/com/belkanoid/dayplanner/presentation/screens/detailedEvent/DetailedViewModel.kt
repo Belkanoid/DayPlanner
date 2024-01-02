@@ -5,6 +5,7 @@ import com.belkanoid.dayplanner.domain.PlannerRepository
 import javax.inject.Inject
 
 class DetailedViewModel @Inject constructor(
+//    private val eventId: Int,
     private val repository: PlannerRepository
 ): ViewModel() {
 
