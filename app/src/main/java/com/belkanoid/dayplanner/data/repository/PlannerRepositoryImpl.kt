@@ -5,18 +5,22 @@ import com.belkanoid.dayplanner.data.localSource.mapper.PlannerMapper.mapToDbMod
 import com.belkanoid.dayplanner.data.localSource.mapper.PlannerMapper.mapToEntityList
 import com.belkanoid.dayplanner.domain.Event
 import com.belkanoid.dayplanner.domain.PlannerRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 class PlannerRepositoryImpl @Inject constructor(
      private val plannerDao: PlannerDao,
 ): PlannerRepository {
 
-    override fun getEventsFlowForDay(startDay: Long, endDay: Long) =
-        plannerDao
-            .getEventFlowListForDay(startDay = startDay, endDay = endDay)
-            .map { it.mapToEntityList() }
+    private val _eventsForDay = MutableSharedFlow<List<Event>>()
+    override val eventsForDay = _eventsForDay.asSharedFlow()
+
+    override suspend fun findEventsForDay(startDay: Long, endDay: Long) =
+        plannerDao.getEventFlowListForDay(startDay = startDay, endDay = endDay).collect{
+            _eventsForDay.emit(it.mapToEntityList())
+        }
+
 
     override suspend fun addEvent(event: Event) = plannerDao.insertEvent(event.mapToDbModel())
 

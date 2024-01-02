@@ -2,19 +2,23 @@ package com.belkanoid.dayplanner.presentation.screens.detailedEvent
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.belkanoid.dayplanner.R
+import com.belkanoid.dayplanner.databinding.FragmentDetailedEventBinding
+import com.belkanoid.dayplanner.di.injectBinding
 
-class DetailedEventFragment : Fragment() {
+class DetailedEventFragment : Fragment(R.layout.fragment_detailed_event) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detailed_event, container, false)
 
+    private val binding by injectBinding(FragmentDetailedEventBinding::bind)
+
+
+    companion object {
+
+        private const val EVENT_ID = "eventId"
+        fun newInstance(eventId: Int) = DetailedEventFragment().apply {
+            arguments = Bundle().apply {
+                putInt(EVENT_ID, eventId)
+            }
+        }
     }
 }

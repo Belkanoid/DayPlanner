@@ -4,12 +4,15 @@ import android.app.Application
 import com.belkanoid.dayplanner.presentation.screens.eventPlanner.EventPlannerFragment
 import dagger.BindsInstance
 import dagger.Component
-import dagger.Component.Factory
+import javax.inject.Singleton
 
-@Component(modules = [DataModule::class])
+@Singleton
+@Component(modules = [DataModule::class, DomainModule::class])
 interface PlannerComponent {
 
+    fun detailedFragmentComponentFactory(): DetailedFragmentSubcomponent.Factory
     fun inject(eventPlannerFragment: EventPlannerFragment)
+
 
     @Component.Factory
     interface Factory {

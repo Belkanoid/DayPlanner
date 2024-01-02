@@ -1,6 +1,6 @@
 package com.belkanoid.dayplanner.presentation.screens.eventPlanner
 
-import com.belkanoid.dayplanner.domain.Event
+import com.belkanoid.dayplanner.domain.TimeSlot
 
 sealed class EventPlannerState {
 
@@ -8,5 +8,5 @@ sealed class EventPlannerState {
 
     data object Loading : EventPlannerState()
 
-    data class Success(val events: List<Event>) : EventPlannerState()
+    data class Success(val timeSlots: List<TimeSlot>) : EventPlannerState()
 }

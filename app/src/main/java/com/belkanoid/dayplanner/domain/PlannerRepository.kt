@@ -1,11 +1,13 @@
 package com.belkanoid.dayplanner.domain
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 
 
 interface PlannerRepository {
 
-    fun getEventsFlowForDay(startDay: Long, endDay: Long): Flow<List<Event>>
+    val eventsForDay: SharedFlow<List<Event>>
+
+    suspend fun findEventsForDay(startDay: Long, endDay: Long)
 
     suspend fun addEvent(event: Event)
 
