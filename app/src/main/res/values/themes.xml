@@ -3,12 +3,21 @@
     <style name="Base.Theme.DayPlanner" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/white</item>
     </style>
 
     <style name="Theme.DayPlanner" parent="Base.Theme.DayPlanner" />
+
+    <style name="DefaultNumberPickerTheme" parent="Base.Theme.DayPlanner">
+        <item name="colorControlNormal">#03A9F4</item>
+        <item name="android:scaleX">1</item>
+        <item name="android:scaleY">1</item>
+    </style>
 
     <style name="CalenderViewCustom" parent="Theme.AppCompat">
         <item name="colorControlActivated">#03A9F4</item>
         <item name="android:textColorPrimary">@color/black</item>
     </style>
+
 </resources>

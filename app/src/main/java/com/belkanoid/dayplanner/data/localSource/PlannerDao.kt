@@ -13,6 +13,9 @@ interface PlannerDao {
     @Query("SELECT * FROM events_table WHERE :startDay <= startTime AND endTime <= :endDay")
     fun getEventFlowListForDay(startDay: Long, endDay: Long): Flow<List<EventDto>>
 
+    @Query("SELECT * FROM events_table WHERE id = :eventId")
+    fun getEvent(eventId: Int): Flow<EventDto>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEvent(event: EventDto)
 

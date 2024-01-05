@@ -46,6 +46,7 @@ dependencies {
     val coroutinesVersion = "1.6.4"
     val coroutinesLifecycleVersion = "2.6.2"
 
+
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
@@ -56,6 +57,7 @@ dependencies {
     //LifeCycle +Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$coroutinesLifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$coroutinesLifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$coroutinesLifecycleVersion")
 
     implementation("androidx.core:core-ktx:1.9.0")

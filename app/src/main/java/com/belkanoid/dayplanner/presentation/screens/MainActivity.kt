@@ -1,8 +1,7 @@
-package com.belkanoid.dayplanner.presentation
+package com.belkanoid.dayplanner.presentation.screens
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.belkanoid.dayplanner.R
 
 class MainActivity : AppCompatActivity() {

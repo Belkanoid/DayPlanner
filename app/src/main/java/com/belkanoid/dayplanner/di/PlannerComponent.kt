@@ -2,7 +2,8 @@ package com.belkanoid.dayplanner.di
 
 import android.app.Application
 import com.belkanoid.dayplanner.presentation.screens.createEvent.CreateEventFragment
-import com.belkanoid.dayplanner.presentation.screens.eventPlanner.EventPlannerFragment
+import com.belkanoid.dayplanner.presentation.screens.detailedEvent.DetailedEventFragment
+import com.belkanoid.dayplanner.presentation.screens.listEvent.EventPlannerFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

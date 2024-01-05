@@ -1,4 +1,4 @@
-package com.belkanoid.dayplanner.presentation.screens.eventPlanner
+package com.belkanoid.dayplanner.presentation.screens.listEvent
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class EventPlannerViewModel @Inject constructor(
@@ -38,7 +39,7 @@ class EventPlannerViewModel @Inject constructor(
 
     init {
         val currentDateTime = DateConverter.getCurrentLocalDateTime()
-        getEventsForDay(currentDateTime.startOfDay(), currentDateTime.endOfDay())
+        getEventsForDay(currentDateTime)
     }
 
     private fun createTimeSlots(events: List<Event>): List<TimeSlot> {
@@ -47,18 +48,18 @@ class EventPlannerViewModel @Inject constructor(
         (0..23).forEach {hour ->
             val eventsInInterval = events.filter {event ->
                 val hourOfEvent = event.startTime.toLocalDateTime().hour
-                hour <= hourOfEvent && hourOfEvent <= hour+1
-            }
+                hour <= hourOfEvent && hourOfEvent < hour+1
+            }.sortedBy { it.startTime }
             timeSlots.add(TimeSlot("%02d:00".format(hour), eventsInInterval))
         }
         return timeSlots
     }
 
-    fun getEventsForDay(start: Long, end: Long) {
+    fun getEventsForDay(date: LocalDateTime) {
         searchJob?.cancel("Started new events search")
         searchJob = viewModelScope.launch {
             loadingState.emit(EventPlannerState.Loading)
-            repository.findEventsForDay(start, end)
+            repository.findEventsForDay(date.startOfDay(), date.endOfDay())
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.belkanoid.dayplanner.presentation.PlannerApplication
 import com.belkanoid.dayplanner.presentation.ViewModelFactory
+import com.belkanoid.dayplanner.presentation.screens.detailedEvent.DetailedEventFragment
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -23,6 +24,13 @@ inline fun <reified T : ViewModel> Fragment.injectViewModel(crossinline initial:
 
 fun Fragment.injectComponent() = ReadOnlyProperty<Fragment, PlannerComponent> { _, _ ->
     (this.requireActivity().application as PlannerApplication).component
+}
+
+fun DetailedEventFragment.injectSubcomponent(initial: () -> Int) = ReadOnlyProperty<Fragment, DetailedFragmentSubcomponent> { _, _ ->
+    val id = initial()
+    (this.requireActivity().application as PlannerApplication).component
+        .detailedFragmentComponentFactory()
+        .create(id)
 }
 
 inline fun <T: ViewBinding> Fragment.injectBinding(noinline factory: (View) -> T) =

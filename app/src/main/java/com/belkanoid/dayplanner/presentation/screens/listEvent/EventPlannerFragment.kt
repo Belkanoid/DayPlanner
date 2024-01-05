@@ -1,4 +1,4 @@
-package com.belkanoid.dayplanner.presentation.screens.eventPlanner
+package com.belkanoid.dayplanner.presentation.screens.listEvent
 
 import android.os.Bundle
 import android.view.View
@@ -7,24 +7,21 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.belkanoid.dayplanner.R
-import com.belkanoid.dayplanner.data.repository.DateConverter.endOfDay
-import com.belkanoid.dayplanner.data.repository.DateConverter.startOfDay
+import com.belkanoid.dayplanner.data.repository.DateConverter.getTimeInLong
 import com.belkanoid.dayplanner.databinding.FragmentEventPlanerBinding
 import com.belkanoid.dayplanner.di.injectBinding
 import com.belkanoid.dayplanner.di.injectComponent
 import com.belkanoid.dayplanner.di.injectViewModel
-import com.belkanoid.dayplanner.domain.Event
 import com.belkanoid.dayplanner.presentation.ViewModelFactory
 import com.belkanoid.dayplanner.presentation.screens.createEvent.CreateEventFragment
 import com.belkanoid.dayplanner.presentation.screens.detailedEvent.DetailedEventFragment
-import com.belkanoid.dayplanner.presentation.screens.eventPlanner.adapter.EventSlotAdapter
+import com.belkanoid.dayplanner.presentation.screens.listEvent.adapter.EventSlotAdapter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
-
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -33,11 +30,23 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
     private val binding by injectBinding(FragmentEventPlanerBinding::bind)
     private val component by injectComponent()
 
-    private val listAdapter: EventSlotAdapter = EventSlotAdapter()
+    private val slotAdapter: EventSlotAdapter = EventSlotAdapter()
+
+    private var selectedTimestamp = System.currentTimeMillis()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.eventsCalendar.adapter = listAdapter
+        with(binding) {
+            rvEvents.adapter = slotAdapter
+            calendar.date = selectedTimestamp
+        }
+        slotAdapter.onEventClick = {event ->
+            val fragment = DetailedEventFragment.newInstance(event.id)
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
         component.inject(this)
         viewModel.state
             .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
@@ -45,27 +54,26 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
                 when (state) {
                     is EventPlannerState.Empty -> Unit
                     is EventPlannerState.Loading -> Unit
-                    is EventPlannerState.Success -> listAdapter.submitList(state.timeSlots)
+                    is EventPlannerState.Success -> slotAdapter.submitList(state.timeSlots)
                 }
             }
             .launchIn(lifecycleScope)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         with(binding) {
-            rvEvents.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            calendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
                 val selectedDateTime = LocalDateTime.of(year, month + 1, dayOfMonth, 0, 0)
-                viewModel.getEventsForDay(
-                    selectedDateTime.startOfDay(),
-                    selectedDateTime.endOfDay()
-                )
+                selectedTimestamp = selectedDateTime.getTimeInLong()
+                viewModel.getEventsForDay(selectedDateTime)
             }
 
             fabAddEvent.setOnClickListener {
-                val fragment = CreateEventFragment.newInstance()
+                val fragment = CreateEventFragment.newInstance(selectedTimestamp)
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .add(R.id.container, fragment)
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
                     .commit()
             }
         }

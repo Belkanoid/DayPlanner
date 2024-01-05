@@ -1,4 +1,4 @@
-package com.belkanoid.dayplanner.presentation.screens.eventPlanner
+package com.belkanoid.dayplanner.presentation.screens.listEvent
 
 import com.belkanoid.dayplanner.domain.TimeSlot
 

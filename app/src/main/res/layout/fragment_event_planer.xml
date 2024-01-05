@@ -5,29 +5,29 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".presentation.screens.eventPlanner.EventPlannerFragment">
+    tools:context=".presentation.screens.listEvent.EventPlannerFragment">
 
 
     <CalendarView
-        android:id="@+id/rvEvents"
+        android:id="@+id/calendar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:theme="@style/CalenderViewCustom"
-        app:layout_constraintBottom_toTopOf="@+id/events_calendar"
+        app:layout_constraintBottom_toTopOf="@+id/rvEvents"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/events_calendar"
+        android:id="@+id/rvEvents"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvEvents"
+        app:layout_constraintTop_toBottomOf="@+id/calendar"
         tools:listitem="@layout/event_list" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -40,6 +40,7 @@
         android:contentDescription="addEvent"
         android:clickable="true"
         android:src="@android:drawable/ic_input_add"
+        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
