@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
+
 }
 
 android {
@@ -46,6 +48,7 @@ dependencies {
     val coroutinesVersion = "1.6.4"
     val coroutinesLifecycleVersion = "2.6.2"
 
+    implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
@@ -57,7 +60,6 @@ dependencies {
     //LifeCycle +Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$coroutinesLifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$coroutinesLifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$coroutinesLifecycleVersion")
 
     implementation("androidx.core:core-ktx:1.9.0")

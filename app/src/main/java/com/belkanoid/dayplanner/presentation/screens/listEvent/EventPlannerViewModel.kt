@@ -6,6 +6,7 @@ import com.belkanoid.dayplanner.data.repository.DateConverter
 import com.belkanoid.dayplanner.data.repository.DateConverter.endOfDay
 import com.belkanoid.dayplanner.data.repository.DateConverter.startOfDay
 import com.belkanoid.dayplanner.data.repository.DateConverter.toLocalDateTime
+import com.belkanoid.dayplanner.data.repository.JsonParser.parse
 import com.belkanoid.dayplanner.domain.Event
 import com.belkanoid.dayplanner.domain.PlannerRepository
 import com.belkanoid.dayplanner.domain.TimeSlot
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.InputStream
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -61,6 +63,11 @@ class EventPlannerViewModel @Inject constructor(
             loadingState.emit(EventPlannerState.Loading)
             repository.findEventsForDay(date.startOfDay(), date.endOfDay())
         }
+    }
+
+    fun addEventsFromJson(input: InputStream?) {
+        val eventsFromJson = input?.parse<List<Event>>() ?: listOf()
+
     }
 
     private fun <T> Flow<T>.mergeWith(another: Flow<T>): Flow<T> = merge(this, another)

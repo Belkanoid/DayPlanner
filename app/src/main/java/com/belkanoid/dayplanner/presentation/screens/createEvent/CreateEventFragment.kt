@@ -1,7 +1,10 @@
 package com.belkanoid.dayplanner.presentation.screens.createEvent
 
 import android.os.Bundle
+import android.os.FileUtils
+import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -18,6 +21,7 @@ import com.belkanoid.dayplanner.presentation.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.io.File
 import javax.inject.Inject
 
 
@@ -34,11 +38,12 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
-        selectedDate = (arguments?.getLong(SELECTED_DATE) ?: System.currentTimeMillis()).toSimpleDate()
+        selectedDate =
+            (arguments?.getLong(SELECTED_DATE) ?: System.currentTimeMillis()).toSimpleDate()
         viewModel.state
             .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
             .onEach { state ->
-                when(state) {
+                when (state) {
                     CreateEventState.Empty -> Unit
                     is CreateEventState.Error -> binding.showSnackbar(state.message)
                     is CreateEventState.Success -> {
@@ -55,7 +60,6 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
         with(binding) {
             startHour.configure(23)
             startMin.configure(59)
-
             endHour.configure(23)
             endMin.configure(59)
 
@@ -70,8 +74,16 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
                 val event = Event(
                     name = etTittle.text.toString(),
                     description = etDescription.text.toString(),
-                    startTime = viewModel.convertTimeToTimestamp(selectedDate, startHour.value, startMin.value),
-                    endTime = viewModel.convertTimeToTimestamp(selectedDate, endHour.value, endMin.value),
+                    startTime = viewModel.convertTimeToTimestamp(
+                        selectedDate,
+                        startHour.value,
+                        startMin.value
+                    ),
+                    endTime = viewModel.convertTimeToTimestamp(
+                        selectedDate,
+                        endHour.value,
+                        endMin.value
+                    ),
                 )
                 viewModel.addEvent(event)
             }
@@ -81,8 +93,8 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
     private fun ViewBinding.showSnackbar(message: String) {
         Snackbar.make(this.root, message, Snackbar.LENGTH_SHORT).show()
     }
-    companion object {
 
+    companion object {
         private const val SELECTED_DATE = "selectedDate"
         fun newInstance(timestamp: Long) = CreateEventFragment().apply {
             arguments = Bundle().apply {

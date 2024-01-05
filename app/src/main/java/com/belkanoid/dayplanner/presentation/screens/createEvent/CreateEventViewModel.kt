@@ -8,7 +8,6 @@ import com.belkanoid.dayplanner.domain.Event
 import com.belkanoid.dayplanner.domain.PlannerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject

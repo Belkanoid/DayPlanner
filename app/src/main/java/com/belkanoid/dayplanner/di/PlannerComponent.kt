@@ -8,14 +8,13 @@ import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
+
 @Singleton
 @Component(modules = [DataModule::class, DomainModule::class])
 interface PlannerComponent {
 
-    fun detailedFragmentComponentFactory(): DetailedFragmentSubcomponent.Factory
     fun inject(eventPlannerFragment: EventPlannerFragment)
     fun inject(createEventFragment: CreateEventFragment)
-
 
     @Component.Factory
     interface Factory {
