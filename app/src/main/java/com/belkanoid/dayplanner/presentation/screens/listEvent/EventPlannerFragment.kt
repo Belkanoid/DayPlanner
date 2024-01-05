@@ -66,6 +66,9 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
                     is EventPlannerState.Empty -> Unit
                     is EventPlannerState.Loading -> Unit
                     is EventPlannerState.Success -> slotAdapter.submitList(state.timeSlots)
+                    is EventPlannerState.EventsFromJson -> {
+
+                    }
                 }
             }
             .launchIn(lifecycleScope)

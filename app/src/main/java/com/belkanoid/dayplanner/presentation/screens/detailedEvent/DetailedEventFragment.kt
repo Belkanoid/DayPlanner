@@ -39,7 +39,6 @@ class DetailedEventFragment : Fragment(R.layout.fragment_detailed_event) {
     companion object {
 
         private const val EVENT = "event"
-
         fun newInstance(event: Event) = DetailedEventFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(EVENT, event)
