@@ -8,11 +8,7 @@ import com.belkanoid.dayplanner.data.repository.DateConverter.toHHmm
 import com.belkanoid.dayplanner.data.repository.DateConverter.toSimpleDate
 import com.belkanoid.dayplanner.databinding.FragmentDetailedEventBinding
 import com.belkanoid.dayplanner.di.injectBinding
-import com.belkanoid.dayplanner.di.injectComponent
-import com.belkanoid.dayplanner.di.injectViewModel
 import com.belkanoid.dayplanner.domain.Event
-import com.belkanoid.dayplanner.presentation.ViewModelFactory
-import javax.inject.Inject
 
 class DetailedEventFragment : Fragment(R.layout.fragment_detailed_event) {
 

@@ -1,5 +1,6 @@
 package com.belkanoid.dayplanner.domain
 
+import android.net.Uri
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 
@@ -16,10 +17,10 @@ interface PlannerRepository {
 
     suspend fun removeEvent(event: Event)
 
-    suspend fun editEvent(oldEvent: Event, newEvent: Event)
+    suspend fun editEvent(newEvent: Event)
 
-    suspend fun loadEventsFromJson(jsonUrl: String)
+    suspend fun loadEventsFromJson(uri: Uri): List<Event>
 
-    suspend fun formJsonFromEvents(): String
+    suspend fun formEventsToJson(): String
 
 }

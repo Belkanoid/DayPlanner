@@ -1,7 +1,9 @@
 package com.belkanoid.dayplanner.di
 
 
+import android.view.LayoutInflater
 import android.view.View
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -25,6 +27,11 @@ fun Fragment.injectComponent() = ReadOnlyProperty<Fragment, PlannerComponent> { 
     (this.requireActivity().application as PlannerApplication).component
 }
 
+
+inline fun <T : ViewBinding> DialogFragment.injectBinding(crossinline factory: (LayoutInflater) -> T) =
+    lazy(LazyThreadSafetyMode.NONE) {
+        factory(layoutInflater)
+    }
 
 inline fun <T: ViewBinding> Fragment.injectBinding(noinline factory: (View) -> T) =
     FragmentViewBindingDelegate(this, factory)

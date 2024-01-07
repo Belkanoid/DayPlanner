@@ -15,12 +15,16 @@ object PlannerMapper {
 
     fun EventDto.mapToEntity() : Event = Event(
         id = this.id,
-        startTime = this.startTime,
-        endTime = this.endTime,
+        startTime = this.startTime.addPadToEnd(),
+        endTime = this.endTime.addPadToEnd(),
         name = this.name,
         description = this.description,
     )
 
     fun List<EventDto>.mapToEntityList() = this.map { it.mapToEntity() }
+
+    private fun Long.addPadToEnd(): Long {
+        return this.toString().padEnd(13, '0').toLong()
+    }
 
 }

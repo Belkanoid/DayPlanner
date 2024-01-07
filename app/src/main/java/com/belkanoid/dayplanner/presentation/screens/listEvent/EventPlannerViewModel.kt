@@ -1,27 +1,29 @@
 package com.belkanoid.dayplanner.presentation.screens.listEvent
 
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.belkanoid.dayplanner.data.repository.DateConverter
 import com.belkanoid.dayplanner.data.repository.DateConverter.endOfDay
 import com.belkanoid.dayplanner.data.repository.DateConverter.startOfDay
 import com.belkanoid.dayplanner.data.repository.DateConverter.toLocalDateTime
-import com.belkanoid.dayplanner.data.repository.JsonParser.parse
 import com.belkanoid.dayplanner.domain.Event
 import com.belkanoid.dayplanner.domain.PlannerRepository
 import com.belkanoid.dayplanner.domain.TimeSlot
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
+import com.belkanoid.dayplanner.presentation.extensions.mergeWith
+import com.belkanoid.dayplanner.presentation.screens.dialogs.JsonDialogFragment
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.io.InputStream
 import java.time.LocalDateTime
 import javax.inject.Inject
+import com.belkanoid.dayplanner.presentation.screens.dialogs.JsonDialogFragment.Companion.DialogType
 
 class EventPlannerViewModel @Inject constructor(
     private val repository: PlannerRepository,
@@ -31,7 +33,7 @@ class EventPlannerViewModel @Inject constructor(
     private val loadingState = MutableSharedFlow<EventPlannerState>()
 
     val state = repository.eventsForDay
-        .map { EventPlannerState.Success(createTimeSlots(it)) as EventPlannerState}
+        .map { EventPlannerState.Success(createTimeSlots(it)) as EventPlannerState }
         .mergeWith(loadingState)
         .stateIn(
             scope = viewModelScope,
@@ -47,10 +49,10 @@ class EventPlannerViewModel @Inject constructor(
     private fun createTimeSlots(events: List<Event>): List<TimeSlot> {
         val timeSlots = mutableListOf<TimeSlot>()
 
-        (0..23).forEach {hour ->
-            val eventsInInterval = events.filter {event ->
+        (0..23).forEach { hour ->
+            val eventsInInterval = events.filter { event ->
                 val hourOfEvent = event.startTime.toLocalDateTime().hour
-                hour <= hourOfEvent && hourOfEvent < hour+1
+                hour <= hourOfEvent && hourOfEvent < hour + 1
             }.sortedBy { it.startTime }
             timeSlots.add(TimeSlot("%02d:00".format(hour), eventsInInterval))
         }
@@ -65,10 +67,39 @@ class EventPlannerViewModel @Inject constructor(
         }
     }
 
-    fun addEventsFromJson(input: InputStream?) {
-        val eventsFromJson = input?.parse<List<Event>>() ?: listOf()
+    fun addEventsFromJson(uri: Uri?) {
+        viewModelScope.launch {
+            if (uri == null) {
+                loadingState.emit(EventPlannerState.Error("Что-то пошло не так, попробуйте еще раз"))
+                return@launch
+            }
+            if (uri.path?.contains(".json") == false) {
+                loadingState.emit(EventPlannerState.Error("Выбранный файл не являтся json объектом"))
+                return@launch
+            }
+            val events = repository.loadEventsFromJson(uri)
+            loadingState.emit(EventPlannerState.EventsFromJson(events))
+        }
 
     }
 
-    private fun <T> Flow<T>.mergeWith(another: Flow<T>): Flow<T> = merge(this, another)
+    fun handlePermissionWithDialog(
+        permission: Int,
+        onGranted: () -> Unit,
+        onNotGranted: () -> Unit
+    ): JsonDialogFragment {
+        return if (permission == PackageManager.PERMISSION_GRANTED) {
+            createDialog(DialogType.ADD_EVENTS_FROM_JSON) { onGranted() }
+        } else {
+            createDialog(DialogType.ACCESS_INTERNAL_STORAGE) { onNotGranted() }
+        }
+    }
+
+    private fun createDialog(
+        type: DialogType,
+        onClick: () -> Unit
+    ): JsonDialogFragment =
+        JsonDialogFragment.newInstance(type = type).apply { onClickListener = onClick }
+
+
 }

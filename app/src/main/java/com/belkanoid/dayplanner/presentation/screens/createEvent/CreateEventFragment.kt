@@ -1,15 +1,11 @@
 package com.belkanoid.dayplanner.presentation.screens.createEvent
 
 import android.os.Bundle
-import android.os.FileUtils
-import android.util.Log
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.viewbinding.ViewBinding
 import com.belkanoid.dayplanner.R
 import com.belkanoid.dayplanner.data.repository.DateConverter.toSimpleDate
 import com.belkanoid.dayplanner.databinding.FragmentCreateEventBinding
@@ -18,10 +14,9 @@ import com.belkanoid.dayplanner.di.injectComponent
 import com.belkanoid.dayplanner.di.injectViewModel
 import com.belkanoid.dayplanner.domain.Event
 import com.belkanoid.dayplanner.presentation.ViewModelFactory
-import com.google.android.material.snackbar.Snackbar
+import com.belkanoid.dayplanner.presentation.extensions.showSnackbar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.io.File
 import javax.inject.Inject
 
 
@@ -45,9 +40,9 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
             .onEach { state ->
                 when (state) {
                     CreateEventState.Empty -> Unit
-                    is CreateEventState.Error -> binding.showSnackbar(state.message)
+                    is CreateEventState.Error -> binding.showSnackbar(state.message, R.color.error)
                     is CreateEventState.Success -> {
-                        binding.showSnackbar(state.message)
+                        binding.showSnackbar(state.message, R.color.success)
                         requireActivity().supportFragmentManager.popBackStack()
                     }
                 }
@@ -88,10 +83,6 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
                 viewModel.addEvent(event)
             }
         }
-    }
-
-    private fun ViewBinding.showSnackbar(message: String) {
-        Snackbar.make(this.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     companion object {

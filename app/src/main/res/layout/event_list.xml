@@ -13,7 +13,7 @@
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
-        android:text="07:00"
+        tools:text="07:00"
         app:layout_constraintBottom_toTopOf="@+id/rvEventList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
