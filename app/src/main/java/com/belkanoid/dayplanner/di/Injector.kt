@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.belkanoid.dayplanner.presentation.PlannerApplication
-import com.belkanoid.dayplanner.presentation.ViewModelFactory
+import com.belkanoid.dayplanner.presentation.factory.ViewModelFactory
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -29,7 +29,7 @@ fun Fragment.injectComponent() = ReadOnlyProperty<Fragment, PlannerComponent> { 
 
 
 inline fun <T : ViewBinding> DialogFragment.injectBinding(crossinline factory: (LayoutInflater) -> T) =
-    lazy(LazyThreadSafetyMode.NONE) {
+    lazy {
         factory(layoutInflater)
     }
 

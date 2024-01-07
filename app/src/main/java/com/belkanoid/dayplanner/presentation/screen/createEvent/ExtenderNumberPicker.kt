@@ -1,4 +1,4 @@
-package com.belkanoid.dayplanner.presentation.screens.createEvent
+package com.belkanoid.dayplanner.presentation.screen.createEvent
 
 import android.content.Context
 import android.graphics.Color

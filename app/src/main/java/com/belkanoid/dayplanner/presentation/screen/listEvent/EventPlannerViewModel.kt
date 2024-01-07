@@ -1,21 +1,22 @@
-package com.belkanoid.dayplanner.presentation.screens.listEvent
+package com.belkanoid.dayplanner.presentation.screen.listEvent
 
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.belkanoid.dayplanner.R
 import com.belkanoid.dayplanner.data.repository.DateConverter
 import com.belkanoid.dayplanner.data.repository.DateConverter.endOfDay
 import com.belkanoid.dayplanner.data.repository.DateConverter.startOfDay
 import com.belkanoid.dayplanner.data.repository.DateConverter.toLocalDateTime
+import com.belkanoid.dayplanner.data.repository.ResourcesProvider
 import com.belkanoid.dayplanner.domain.Event
 import com.belkanoid.dayplanner.domain.PlannerRepository
 import com.belkanoid.dayplanner.domain.TimeSlot
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import com.belkanoid.dayplanner.presentation.extensions.mergeWith
-import com.belkanoid.dayplanner.presentation.screens.dialogs.JsonDialogFragment
+import com.belkanoid.dayplanner.presentation.extension.mergeWith
+import com.belkanoid.dayplanner.presentation.screen.dialog.JsonDialogFragment
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -23,10 +24,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
-import com.belkanoid.dayplanner.presentation.screens.dialogs.JsonDialogFragment.Companion.DialogType
+import com.belkanoid.dayplanner.presentation.screen.dialog.JsonDialogFragment.Companion.DialogType
 
 class EventPlannerViewModel @Inject constructor(
     private val repository: PlannerRepository,
+    private val resourcesProvider: ResourcesProvider
 ) : ViewModel() {
 
     private var searchJob: Job? = null
@@ -70,11 +72,15 @@ class EventPlannerViewModel @Inject constructor(
     fun addEventsFromJson(uri: Uri?) {
         viewModelScope.launch {
             if (uri == null) {
-                loadingState.emit(EventPlannerState.Error("Что-то пошло не так, попробуйте еще раз"))
+                loadingState.emit(EventPlannerState.Error(
+                    message = resourcesProvider.getString(R.string.state_error_something_goes_wrong))
+                )
                 return@launch
             }
             if (uri.path?.contains(".json") == false) {
-                loadingState.emit(EventPlannerState.Error("Выбранный файл не являтся json объектом"))
+                loadingState.emit(EventPlannerState.Error(
+                    message = resourcesProvider.getString(R.string.state_error_not_json)
+                ))
                 return@launch
             }
             val events = repository.loadEventsFromJson(uri)

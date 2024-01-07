@@ -1,4 +1,4 @@
-package com.belkanoid.dayplanner.presentation.screens.listEvent
+package com.belkanoid.dayplanner.presentation.screen.listEvent
 
 import android.Manifest
 import android.os.Bundle
@@ -16,11 +16,11 @@ import com.belkanoid.dayplanner.databinding.FragmentEventPlanerBinding
 import com.belkanoid.dayplanner.di.injectBinding
 import com.belkanoid.dayplanner.di.injectComponent
 import com.belkanoid.dayplanner.di.injectViewModel
-import com.belkanoid.dayplanner.presentation.ViewModelFactory
-import com.belkanoid.dayplanner.presentation.extensions.showSnackbar
-import com.belkanoid.dayplanner.presentation.screens.createEvent.CreateEventFragment
-import com.belkanoid.dayplanner.presentation.screens.detailedEvent.DetailedEventFragment
-import com.belkanoid.dayplanner.presentation.screens.listEvent.adapter.EventSlotAdapter
+import com.belkanoid.dayplanner.presentation.factory.ViewModelFactory
+import com.belkanoid.dayplanner.presentation.extension.showSnackbar
+import com.belkanoid.dayplanner.presentation.screen.createEvent.CreateEventFragment
+import com.belkanoid.dayplanner.presentation.screen.detailedEvent.DetailedEventFragment
+import com.belkanoid.dayplanner.presentation.screen.listEvent.adapter.EventSlotAdapter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.time.LocalDateTime

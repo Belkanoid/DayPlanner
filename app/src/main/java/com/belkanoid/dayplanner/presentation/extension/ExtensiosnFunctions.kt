@@ -1,10 +1,5 @@
-package com.belkanoid.dayplanner.presentation.extensions
+package com.belkanoid.dayplanner.presentation.extension
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Color
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
 import com.belkanoid.dayplanner.R

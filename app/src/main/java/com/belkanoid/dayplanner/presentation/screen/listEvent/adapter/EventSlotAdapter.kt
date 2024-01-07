@@ -1,4 +1,4 @@
-package com.belkanoid.dayplanner.presentation.screens.listEvent.adapter
+package com.belkanoid.dayplanner.presentation.screen.listEvent.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".presentation.screens.createEvent.CreateEventFragment">
+    tools:context=".presentation.screen.createEvent.CreateEventFragment">
 
-    <com.belkanoid.dayplanner.presentation.screens.createEvent.ExtenderNumberPicker
+    <com.belkanoid.dayplanner.presentation.screen.createEvent.ExtenderNumberPicker
         android:id="@+id/startHour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.belkanoid.dayplanner.presentation.screens.createEvent.ExtenderNumberPicker
+    <com.belkanoid.dayplanner.presentation.screen.createEvent.ExtenderNumberPicker
         android:id="@+id/startMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
-    <com.belkanoid.dayplanner.presentation.screens.createEvent.ExtenderNumberPicker
+    <com.belkanoid.dayplanner.presentation.screen.createEvent.ExtenderNumberPicker
         android:id="@+id/endHour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.belkanoid.dayplanner.presentation.screens.createEvent.ExtenderNumberPicker
+    <com.belkanoid.dayplanner.presentation.screen.createEvent.ExtenderNumberPicker
         android:id="@+id/endMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_background"
-    tools:context=".presentation.screens.dialogs.JsonDialogFragment">
+    tools:context=".presentation.screen.dialog.JsonDialogFragment">
 
     <TextView
         android:id="@+id/tvDialogTitle"

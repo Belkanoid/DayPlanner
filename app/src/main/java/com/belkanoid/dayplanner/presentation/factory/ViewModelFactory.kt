@@ -1,4 +1,4 @@
-package com.belkanoid.dayplanner.presentation
+package com.belkanoid.dayplanner.presentation.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -2,8 +2,6 @@ package com.belkanoid.dayplanner.data.repository
 
 import android.app.Application
 import android.net.Uri
-import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.belkanoid.dayplanner.data.localSource.PlannerDao
 import com.belkanoid.dayplanner.data.localSource.mapper.PlannerMapper.mapToDbModel
 import com.belkanoid.dayplanner.data.localSource.mapper.PlannerMapper.mapToEntity
@@ -11,12 +9,9 @@ import com.belkanoid.dayplanner.data.localSource.mapper.PlannerMapper.mapToEntit
 import com.belkanoid.dayplanner.data.repository.JsonParser.parse
 import com.belkanoid.dayplanner.domain.Event
 import com.belkanoid.dayplanner.domain.PlannerRepository
-import com.belkanoid.dayplanner.presentation.screens.listEvent.EventPlannerState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PlannerRepositoryImpl @Inject constructor(

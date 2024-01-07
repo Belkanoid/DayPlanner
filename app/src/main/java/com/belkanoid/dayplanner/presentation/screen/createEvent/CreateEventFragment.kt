@@ -1,4 +1,4 @@
-package com.belkanoid.dayplanner.presentation.screens.createEvent
+package com.belkanoid.dayplanner.presentation.screen.createEvent
 
 import android.os.Bundle
 import android.view.View
@@ -13,8 +13,8 @@ import com.belkanoid.dayplanner.di.injectBinding
 import com.belkanoid.dayplanner.di.injectComponent
 import com.belkanoid.dayplanner.di.injectViewModel
 import com.belkanoid.dayplanner.domain.Event
-import com.belkanoid.dayplanner.presentation.ViewModelFactory
-import com.belkanoid.dayplanner.presentation.extensions.showSnackbar
+import com.belkanoid.dayplanner.presentation.factory.ViewModelFactory
+import com.belkanoid.dayplanner.presentation.extension.showSnackbar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject

@@ -27,4 +27,11 @@
 
     <string name="dialog_access_storage_tittle">Нужно разрешение</string>
     <string name="dialog_access_storage_description">Приложиению нужен доступ к просмотру файлов на Вашем устройстве. Это необходимо для того чтобы загрузить ваши сохранненные дела в json формате.</string>
+
+    <string name="state_error_something_goes_wrong">Что-то пошло не так, попробуйте еще раз</string>
+    <string name="state_error_not_json">Выбранный файл не являтся json объектом"</string>
+    <string name="state_error_empty_tittle">Название не должно быть пустым</string>
+    <string name="state_error_invalid_time_interval">Неправильный временной интервал</string>
+
+    <string name="state_success_new_event">Было добавлено новое событие</string>
 </resources>

@@ -1,8 +1,8 @@
 package com.belkanoid.dayplanner.di
 
 import androidx.lifecycle.ViewModel
-import com.belkanoid.dayplanner.presentation.screens.createEvent.CreateEventViewModel
-import com.belkanoid.dayplanner.presentation.screens.listEvent.EventPlannerViewModel
+import com.belkanoid.dayplanner.presentation.screen.createEvent.CreateEventViewModel
+import com.belkanoid.dayplanner.presentation.screen.listEvent.EventPlannerViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

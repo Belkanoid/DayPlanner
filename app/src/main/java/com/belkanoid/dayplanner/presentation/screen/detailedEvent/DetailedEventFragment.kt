@@ -1,4 +1,4 @@
-package com.belkanoid.dayplanner.presentation.screens.detailedEvent
+package com.belkanoid.dayplanner.presentation.screen.detailedEvent
 
 import android.os.Bundle
 import android.view.View
