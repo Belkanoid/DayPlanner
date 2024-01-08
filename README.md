@@ -1,4 +1,4 @@
-built with: Kotlin, Coroutines, Flow, Room
+built with: Kotlin, Coroutines, Flow, Room, Dagger2
 
 
 <img src="https://github.com/Belkanoid/DayPlanner/assets/69011601/f0fc33bd-7216-4854-8094-578d0d626e8f" width="270" height="600">
