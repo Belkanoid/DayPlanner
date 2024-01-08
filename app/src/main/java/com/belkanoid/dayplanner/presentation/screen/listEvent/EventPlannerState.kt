@@ -7,11 +7,9 @@ sealed class EventPlannerState {
 
     data object Empty : EventPlannerState()
 
-    data object Loading : EventPlannerState()
-
     data class Error(val message: String) : EventPlannerState()
 
-    data class EventsFromJson(val events: List<Event>): EventPlannerState()
+    data class EventsFromJson(val message: String, val events: List<Event>): EventPlannerState()
 
     data class Success(val timeSlots: List<TimeSlot>) : EventPlannerState()
 }

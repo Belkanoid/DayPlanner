@@ -16,8 +16,10 @@ import com.belkanoid.dayplanner.databinding.FragmentEventPlanerBinding
 import com.belkanoid.dayplanner.di.injectBinding
 import com.belkanoid.dayplanner.di.injectComponent
 import com.belkanoid.dayplanner.di.injectViewModel
+import com.belkanoid.dayplanner.presentation.extension.showErrorSnackbar
 import com.belkanoid.dayplanner.presentation.factory.ViewModelFactory
 import com.belkanoid.dayplanner.presentation.extension.showSnackbar
+import com.belkanoid.dayplanner.presentation.extension.showSuccessSnackbar
 import com.belkanoid.dayplanner.presentation.screen.createEvent.CreateEventFragment
 import com.belkanoid.dayplanner.presentation.screen.detailedEvent.DetailedEventFragment
 import com.belkanoid.dayplanner.presentation.screen.listEvent.adapter.EventSlotAdapter
@@ -48,9 +50,9 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
     private val permissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                binding.showSnackbar("Теперь можно добавить события из json", R.color.success)
+                binding.showSuccessSnackbar(resources.getString(R.string.permission_granted))
             } else {
-                binding.showSnackbar("Доступ не предоставлен", R.color.error)
+                binding.showErrorSnackbar(resources.getString(R.string.permission_declined))
             }
         }
 
@@ -59,32 +61,24 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
         binding.rvEvents.adapter = slotAdapter
         binding.calendar.date = selectedTimestamp
         slotAdapter.onEventClick = { event ->
-            val fragment = DetailedEventFragment.newInstance(event)
-            open(fragment)
+            open(fragment = DetailedEventFragment.newInstance(event))
         }
         component.inject(this)
+
         viewModel.state
             .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
             .onEach { state ->
                 when (state) {
-                    is EventPlannerState.Empty -> Unit
-                    is EventPlannerState.Loading -> Unit
                     is EventPlannerState.Success -> {
-                        Log.d("LOL2", state.toString())
                         slotAdapter.submitList(state.timeSlots)
                     }
-
                     is EventPlannerState.EventsFromJson -> {
-                        Log.d("LOL1", state.toString())
-                        binding.showSnackbar(
-                            "Было добавлено ${state.events.size} новых событий",
-                            R.color.success,
-                        )
+                        binding.showSuccessSnackbar(state.message)
                     }
-
                     is EventPlannerState.Error -> {
-                        binding.showSnackbar(state.message, R.color.error)
+                        binding.showErrorSnackbar(state.message)
                     }
+                    is EventPlannerState.Empty -> Unit
                 }
             }
             .launchIn(lifecycleScope)
@@ -103,14 +97,14 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
                 proceedWithPermission()
             }
             fabAddEvent.setOnClickListener {
-                val fragment = CreateEventFragment.newInstance(selectedTimestamp)
-                open(fragment)
+                open(fragment = CreateEventFragment.newInstance(selectedTimestamp))
             }
         }
     }
 
     private fun proceedWithPermission() {
-        val permission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+        val permission = ContextCompat
+            .checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
 
         viewModel.handlePermissionWithDialog(
             permission = permission,

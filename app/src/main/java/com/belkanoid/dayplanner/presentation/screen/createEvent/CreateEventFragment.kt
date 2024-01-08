@@ -13,8 +13,10 @@ import com.belkanoid.dayplanner.di.injectBinding
 import com.belkanoid.dayplanner.di.injectComponent
 import com.belkanoid.dayplanner.di.injectViewModel
 import com.belkanoid.dayplanner.domain.Event
+import com.belkanoid.dayplanner.presentation.extension.showErrorSnackbar
+import com.belkanoid.dayplanner.presentation.extension.showSuccessSnackbar
 import com.belkanoid.dayplanner.presentation.factory.ViewModelFactory
-import com.belkanoid.dayplanner.presentation.extension.showSnackbar
+import com.belkanoid.dayplanner.presentation.screen.dialog.DatePickerDialogFragment
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -35,16 +37,21 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
         component.inject(this)
         selectedDate =
             (arguments?.getLong(SELECTED_DATE) ?: System.currentTimeMillis()).toSimpleDate()
+
         viewModel.state
             .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
             .onEach { state ->
                 when (state) {
-                    CreateEventState.Empty -> Unit
-                    is CreateEventState.Error -> binding.showSnackbar(state.message, R.color.error)
+                    is CreateEventState.Error -> {
+                        binding.showErrorSnackbar(state.message)
+                    }
+
                     is CreateEventState.Success -> {
-                        binding.showSnackbar(state.message, R.color.success)
+                        binding.showSuccessSnackbar(state.message)
                         requireActivity().supportFragmentManager.popBackStack()
                     }
+
+                    CreateEventState.Empty -> Unit
                 }
             }
             .launchIn(lifecycleScope)
@@ -60,8 +67,12 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
 
             tvDate.apply {
                 text = selectedDate
-                setOnClickListener {
 
+                setOnClickListener {
+                    DatePickerDialogFragment.newInstance { timestamp ->
+                        selectedDate = timestamp.toSimpleDate()
+                        text = selectedDate
+                    }.show(childFragmentManager, null)
                 }
             }
 

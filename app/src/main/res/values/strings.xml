@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Day planner</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fff fragment</string>
     <string name="event_title">Название</string>
     <string name="event_description">Описание</string>
@@ -34,4 +33,8 @@
     <string name="state_error_invalid_time_interval">Неправильный временной интервал</string>
 
     <string name="state_success_new_event">Было добавлено новое событие</string>
+    <string name="state_success_events_from_json">Было добавлено %1$d новых событий</string>
+
+    <string name="permission_granted">Теперь можно добавить события из json</string>
+    <string name="permission_declined">Доступ не предоставлен</string>
 </resources>

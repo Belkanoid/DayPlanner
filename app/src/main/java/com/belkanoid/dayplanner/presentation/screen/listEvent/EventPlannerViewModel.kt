@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
 import com.belkanoid.dayplanner.presentation.screen.dialog.JsonDialogFragment.Companion.DialogType
+import kotlinx.coroutines.ensureActive
 
 class EventPlannerViewModel @Inject constructor(
     private val repository: PlannerRepository,
@@ -56,6 +57,7 @@ class EventPlannerViewModel @Inject constructor(
                 val hourOfEvent = event.startTime.toLocalDateTime().hour
                 hour <= hourOfEvent && hourOfEvent < hour + 1
             }.sortedBy { it.startTime }
+
             timeSlots.add(TimeSlot("%02d:00".format(hour), eventsInInterval))
         }
         return timeSlots
@@ -64,7 +66,7 @@ class EventPlannerViewModel @Inject constructor(
     fun getEventsForDay(date: LocalDateTime) {
         searchJob?.cancel("Started new events search")
         searchJob = viewModelScope.launch {
-            loadingState.emit(EventPlannerState.Loading)
+            ensureActive()
             repository.findEventsForDay(date.startOfDay(), date.endOfDay())
         }
     }
@@ -72,21 +74,29 @@ class EventPlannerViewModel @Inject constructor(
     fun addEventsFromJson(uri: Uri?) {
         viewModelScope.launch {
             if (uri == null) {
-                loadingState.emit(EventPlannerState.Error(
-                    message = resourcesProvider.getString(R.string.state_error_something_goes_wrong))
+                loadingState.emit(
+                    EventPlannerState.Error(message = resourcesProvider.getString(R.string.state_error_something_goes_wrong))
                 )
                 return@launch
             }
             if (uri.path?.contains(".json") == false) {
-                loadingState.emit(EventPlannerState.Error(
-                    message = resourcesProvider.getString(R.string.state_error_not_json)
-                ))
+                loadingState.emit(
+                    EventPlannerState.Error(message = resourcesProvider.getString(R.string.state_error_not_json))
+                )
                 return@launch
             }
-            val events = repository.loadEventsFromJson(uri)
-            loadingState.emit(EventPlannerState.EventsFromJson(events))
-        }
 
+            val events = repository.loadEventsFromJson(uri)
+            loadingState.emit(
+                EventPlannerState.EventsFromJson(
+                    message = String.format(
+                        resourcesProvider.getString(R.string.state_success_events_from_json),
+                        events.size
+                    ),
+                    events = events
+                )
+            )
+        }
     }
 
     fun handlePermissionWithDialog(
@@ -101,11 +111,8 @@ class EventPlannerViewModel @Inject constructor(
         }
     }
 
-    private fun createDialog(
-        type: DialogType,
-        onClick: () -> Unit
-    ): JsonDialogFragment =
-        JsonDialogFragment.newInstance(type = type).apply { onClickListener = onClick }
+    private fun createDialog(type: DialogType, onClick: () -> Unit): JsonDialogFragment =
+        JsonDialogFragment.newInstance(type = type).apply { this.onClick = onClick }
 
 
 }

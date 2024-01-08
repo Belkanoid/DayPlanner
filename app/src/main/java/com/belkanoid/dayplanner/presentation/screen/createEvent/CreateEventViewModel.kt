@@ -24,22 +24,22 @@ class CreateEventViewModel @Inject constructor(
 
     fun addEvent(event: Event) {
         if (event.name.isEmpty()) {
-            _state.value = CreateEventState.Error(
-                message = resourcesProvider.getString(R.string.state_error_empty_tittle)
+            _state.value = CreateEventState.Error(message = resourcesProvider.getString(R.string.state_error_empty_tittle))
+            return
+        }
+
+        if (event.startTime > event.endTime) {
+            _state.value = CreateEventState.Error(message = resourcesProvider.getString(R.string.state_error_invalid_time_interval))
+            return
+        }
+
+        viewModelScope.launch {
+            repository.addEvent(event)
+            _state.value = CreateEventState.Success(
+                message = resourcesProvider.getString(R.string.state_success_new_event)
             )
         }
-        else if (event.startTime > event.endTime) {
-            _state.value = CreateEventState.Error(
-                message = resourcesProvider.getString(R.string.state_error_invalid_time_interval)
-            )
-        }else {
-            viewModelScope.launch {
-                repository.addEvent(event)
-                _state.value = CreateEventState.Success(
-                    message = resourcesProvider.getString(R.string.state_success_new_event)
-                )
-            }
-        }
+
         _state.value = CreateEventState.Empty // такое решение из за того что stateFlow реализует distinctUntilChanged
     }
 

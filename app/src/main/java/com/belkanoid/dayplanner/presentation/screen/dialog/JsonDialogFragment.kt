@@ -14,29 +14,24 @@ import com.belkanoid.dayplanner.di.injectBinding
 class JsonDialogFragment : DialogFragment() {
 
     private val binding by injectBinding(FragmentJsonDialogBinding::inflate)
-
-    private val title by lazy { arguments?.getString(DIALOG_TITLE) }
-    private val description by lazy { arguments?.getString(DIALOG_DESCRIPTION) }
-    private val additionalInfo by lazy { arguments?.getString(DIALOG_EXTRA_INFO) }
     private val type by lazy { arguments?.getSerializable(DIALOG_TYPE) }
 
-    var onClickListener: (() -> Unit)? = null
+    var onClick: (() -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = AlertDialog.Builder(requireContext()).setView(binding.root).create()
-        createCertainDialogType()
+        initializeCertainDialogType()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return dialog
     }
 
 
-    private fun createCertainDialogType() {
-        var title = this@JsonDialogFragment.title
-        var description = this@JsonDialogFragment.description
-        var additionalInfo = this@JsonDialogFragment.additionalInfo
-        when (type) {
-            DialogType.CUSTOM -> Unit
+    private fun initializeCertainDialogType() {
+        var title: String? = null
+        var description: String? = null
+        var additionalInfo: String? = null
 
+        when (type) {
             DialogType.ACCESS_INTERNAL_STORAGE -> {
                 title = resources.getString(R.string.dialog_access_storage_tittle)
                 description = resources.getString(R.string.dialog_access_storage_description)
@@ -48,44 +43,31 @@ class JsonDialogFragment : DialogFragment() {
                 description = resources.getString(R.string.dialog_add_event_description)
                 additionalInfo =  resources.getString(R.string.event_json_example).trimIndent()
             }
-
         }
-        dialogType(title, description, additionalInfo)
+        fillDialog(title, description, additionalInfo)
     }
 
-    private fun dialogType(title: String?, description: String?, additionalInfo: String?) {
+    private fun fillDialog(title: String?, description: String?, additionalInfo: String?) {
         binding.apply {
             tvDialogTitle.text = title
             tvDialogDescription.text = description
             tvAdditionalInfo.text = additionalInfo
             btnOkay.setOnClickListener {
-                onClickListener?.invoke()
+                onClick?.invoke()
                 dismiss()
             }
         }
     }
 
     companion object {
-
         enum class DialogType {
-            ACCESS_INTERNAL_STORAGE, ADD_EVENTS_FROM_JSON, CUSTOM
+            ACCESS_INTERNAL_STORAGE, ADD_EVENTS_FROM_JSON
         }
 
         private const val DIALOG_TYPE = "DialogType"
-        private const val DIALOG_TITLE: String = "DialogTitle"
-        private const val DIALOG_DESCRIPTION: String = "DialogDescription"
-        private const val DIALOG_EXTRA_INFO: String = "DialogExtraInfo"
-        fun newInstance(
-            type: DialogType,
-            title: String = "",
-            description: String = "",
-            additionalInfo: String = "",
-        ) = JsonDialogFragment().apply {
+        fun newInstance(type: DialogType, ) = JsonDialogFragment().apply {
             arguments = Bundle().apply {
                 putSerializable(DIALOG_TYPE, type)
-                putString(DIALOG_TITLE, title)
-                putString(DIALOG_DESCRIPTION, description)
-                putString(DIALOG_EXTRA_INFO, additionalInfo)
             }
         }
     }
