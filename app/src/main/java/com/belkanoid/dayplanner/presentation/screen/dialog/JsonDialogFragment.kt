@@ -16,7 +16,7 @@ class JsonDialogFragment : DialogFragment() {
     private val binding by injectBinding(FragmentJsonDialogBinding::inflate)
     private val type by lazy { arguments?.getSerializable(DIALOG_TYPE) }
 
-    var onClick: (() -> Unit)? = null
+    private var onClick: (() -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = AlertDialog.Builder(requireContext()).setView(binding.root).create()
@@ -65,7 +65,8 @@ class JsonDialogFragment : DialogFragment() {
         }
 
         private const val DIALOG_TYPE = "DialogType"
-        fun newInstance(type: DialogType, ) = JsonDialogFragment().apply {
+        fun newInstance(type: DialogType, onClickBlock: () -> Unit) = JsonDialogFragment().apply {
+            onClick = onClickBlock
             arguments = Bundle().apply {
                 putSerializable(DIALOG_TYPE, type)
             }

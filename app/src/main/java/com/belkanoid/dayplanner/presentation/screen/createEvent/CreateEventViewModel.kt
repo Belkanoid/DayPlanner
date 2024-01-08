@@ -23,6 +23,8 @@ class CreateEventViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun addEvent(event: Event) {
+        _state.value = CreateEventState.Empty // такое решение из за того что stateFlow реализует distinctUntilChanged
+
         if (event.name.isEmpty()) {
             _state.value = CreateEventState.Error(message = resourcesProvider.getString(R.string.state_error_empty_tittle))
             return
@@ -35,12 +37,8 @@ class CreateEventViewModel @Inject constructor(
 
         viewModelScope.launch {
             repository.addEvent(event)
-            _state.value = CreateEventState.Success(
-                message = resourcesProvider.getString(R.string.state_success_new_event)
-            )
+            _state.value = CreateEventState.Success(message = resourcesProvider.getString(R.string.state_success_new_event))
         }
-
-        _state.value = CreateEventState.Empty // такое решение из за того что stateFlow реализует distinctUntilChanged
     }
 
     fun convertTimeToTimestamp(date: String, hour: Int, minutes: Int): Long {

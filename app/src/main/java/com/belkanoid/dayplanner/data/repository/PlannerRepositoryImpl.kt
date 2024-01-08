@@ -32,6 +32,7 @@ class PlannerRepositoryImpl @Inject constructor(
     override suspend fun addEvent(event: Event) = plannerDao.insertEvent(event.mapToDbModel())
 
     override suspend fun removeEvent(event: Event) = plannerDao.deleteEvent(event.id)
+
     override suspend fun editEvent(newEvent: Event) = addEvent(newEvent)
 
     override suspend fun loadEventsFromJson(uri: Uri): List<Event> {

@@ -35,8 +35,7 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         component.inject(this)
-        selectedDate =
-            (arguments?.getLong(SELECTED_DATE) ?: System.currentTimeMillis()).toSimpleDate()
+        selectedDate = (arguments?.getLong(SELECTED_DATE) ?: System.currentTimeMillis()).toSimpleDate()
 
         viewModel.state
             .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
@@ -81,14 +80,14 @@ class CreateEventFragment : Fragment(R.layout.fragment_create_event) {
                     name = etTittle.text.toString(),
                     description = etDescription.text.toString(),
                     startTime = viewModel.convertTimeToTimestamp(
-                        selectedDate,
-                        startHour.value,
-                        startMin.value
+                        date = selectedDate,
+                        hour = startHour.value,
+                        minutes = startMin.value
                     ),
                     endTime = viewModel.convertTimeToTimestamp(
-                        selectedDate,
-                        endHour.value,
-                        endMin.value
+                        date = selectedDate,
+                        hour = endHour.value,
+                        minutes = endMin.value
                     ),
                 )
                 viewModel.addEvent(event)

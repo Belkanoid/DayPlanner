@@ -39,7 +39,6 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
     private val component by injectComponent()
 
     private val slotAdapter: EventSlotAdapter = EventSlotAdapter()
-
     private var selectedTimestamp = System.currentTimeMillis()
 
     private val addJsonLauncher =
@@ -72,12 +71,15 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
                     is EventPlannerState.Success -> {
                         slotAdapter.submitList(state.timeSlots)
                     }
+
                     is EventPlannerState.EventsFromJson -> {
                         binding.showSuccessSnackbar(state.message)
                     }
+
                     is EventPlannerState.Error -> {
                         binding.showErrorSnackbar(state.message)
                     }
+
                     is EventPlannerState.Empty -> Unit
                 }
             }
@@ -108,12 +110,8 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
 
         viewModel.handlePermissionWithDialog(
             permission = permission,
-            onGranted = {
-                addJsonLauncher.launch("application/json")
-            },
-            onNotGranted = {
-                permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-            },
+            onGranted = { addJsonLauncher.launch(INTENT_TYPE) },
+            onNotGranted = { permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) },
         ).show(childFragmentManager, null)
     }
 
@@ -122,5 +120,9 @@ class EventPlannerFragment : Fragment(R.layout.fragment_event_planer) {
             .replace(R.id.container, fragment)
             .addToBackStack(null)
             .commit()
+    }
+
+    companion object {
+        const val INTENT_TYPE = "application/json"
     }
 }

@@ -75,13 +75,17 @@ class EventPlannerViewModel @Inject constructor(
         viewModelScope.launch {
             if (uri == null) {
                 loadingState.emit(
-                    EventPlannerState.Error(message = resourcesProvider.getString(R.string.state_error_something_goes_wrong))
+                    EventPlannerState.Error(
+                        message = resourcesProvider.getString(R.string.state_error_something_goes_wrong)
+                    )
                 )
                 return@launch
             }
             if (uri.path?.contains(".json") == false) {
                 loadingState.emit(
-                    EventPlannerState.Error(message = resourcesProvider.getString(R.string.state_error_not_json))
+                    EventPlannerState.Error(
+                        message = resourcesProvider.getString(R.string.state_error_not_json)
+                    )
                 )
                 return@launch
             }
@@ -103,16 +107,9 @@ class EventPlannerViewModel @Inject constructor(
         permission: Int,
         onGranted: () -> Unit,
         onNotGranted: () -> Unit
-    ): JsonDialogFragment {
-        return if (permission == PackageManager.PERMISSION_GRANTED) {
-            createDialog(DialogType.ADD_EVENTS_FROM_JSON) { onGranted() }
-        } else {
-            createDialog(DialogType.ACCESS_INTERNAL_STORAGE) { onNotGranted() }
-        }
+    ): JsonDialogFragment = if (permission == PackageManager.PERMISSION_GRANTED) {
+        JsonDialogFragment.newInstance(type = DialogType.ADD_EVENTS_FROM_JSON) { onGranted() }
+    } else {
+        JsonDialogFragment.newInstance(type = DialogType.ACCESS_INTERNAL_STORAGE) { onNotGranted() }
     }
-
-    private fun createDialog(type: DialogType, onClick: () -> Unit): JsonDialogFragment =
-        JsonDialogFragment.newInstance(type = type).apply { this.onClick = onClick }
-
-
 }
