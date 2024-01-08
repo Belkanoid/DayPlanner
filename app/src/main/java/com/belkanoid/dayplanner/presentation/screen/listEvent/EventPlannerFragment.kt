@@ -2,7 +2,6 @@ package com.belkanoid.dayplanner.presentation.screen.listEvent
 
 import android.Manifest
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -17,9 +16,8 @@ import com.belkanoid.dayplanner.di.injectBinding
 import com.belkanoid.dayplanner.di.injectComponent
 import com.belkanoid.dayplanner.di.injectViewModel
 import com.belkanoid.dayplanner.presentation.extension.showErrorSnackbar
-import com.belkanoid.dayplanner.presentation.factory.ViewModelFactory
-import com.belkanoid.dayplanner.presentation.extension.showSnackbar
 import com.belkanoid.dayplanner.presentation.extension.showSuccessSnackbar
+import com.belkanoid.dayplanner.presentation.factory.ViewModelFactory
 import com.belkanoid.dayplanner.presentation.screen.createEvent.CreateEventFragment
 import com.belkanoid.dayplanner.presentation.screen.detailedEvent.DetailedEventFragment
 import com.belkanoid.dayplanner.presentation.screen.listEvent.adapter.EventSlotAdapter

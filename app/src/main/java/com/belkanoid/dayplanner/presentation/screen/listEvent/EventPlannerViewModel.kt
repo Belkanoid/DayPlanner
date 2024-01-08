@@ -13,10 +13,12 @@ import com.belkanoid.dayplanner.data.repository.ResourcesProvider
 import com.belkanoid.dayplanner.domain.Event
 import com.belkanoid.dayplanner.domain.PlannerRepository
 import com.belkanoid.dayplanner.domain.TimeSlot
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import com.belkanoid.dayplanner.presentation.extension.mergeWith
 import com.belkanoid.dayplanner.presentation.screen.dialog.JsonDialogFragment
+import com.belkanoid.dayplanner.presentation.screen.dialog.JsonDialogFragment.Companion.DialogType
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -24,8 +26,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import javax.inject.Inject
-import com.belkanoid.dayplanner.presentation.screen.dialog.JsonDialogFragment.Companion.DialogType
-import kotlinx.coroutines.ensureActive
 
 class EventPlannerViewModel @Inject constructor(
     private val repository: PlannerRepository,
