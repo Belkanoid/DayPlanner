@@ -1,6 +1,6 @@
 built with: Kotlin, Coroutines, Flow, Room
 
-blob:https://web.telegram.org/b87ef38d-8caa-4704-89d8-0fa102ed1980![image](https://github.com/Belkanoid/DayPlanner/assets/69011601/f0fc33bd-7216-4854-8094-578d0d626e8f)
+![image](https://github.com/Belkanoid/DayPlanner/assets/69011601/f0fc33bd-7216-4854-8094-578d0d626e8f)
 blob:https://web.telegram.org/7b301944-db8f-4274-8318-259724b4133f![image](https://github.com/Belkanoid/DayPlanner/assets/69011601/a1d1bfcd-09b4-478f-aec2-ef16b3ce9ec8)
 blob:https://web.telegram.org/dd382744-6260-4427-8be5-d095d924bf22![image](https://github.com/Belkanoid/DayPlanner/assets/69011601/adfa5330-6ed0-45ed-9a51-49aacb236820)
 
